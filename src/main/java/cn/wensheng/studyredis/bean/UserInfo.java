@@ -1,7 +1,11 @@
 package cn.wensheng.studyredis.bean;
 
-public class UserInfo
+import java.io.Serializable;
+
+public class UserInfo implements Serializable
 {
+    private static final long serialVersionUID = -3991598665278483174L;
+
     private String accountName;
 
     private String mobile;

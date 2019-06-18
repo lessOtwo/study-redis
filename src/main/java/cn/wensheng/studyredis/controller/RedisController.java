@@ -1,6 +1,6 @@
 package cn.wensheng.studyredis.controller;
 
-import cn.wensheng.studyredis.service.JedisRedisService;
+import cn.wensheng.studyredis.service.RedisService;
 import cn.wensheng.studyredis.utils.StringTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class JedisRedisController
+public class RedisController
 {
-    private final Logger logger = LoggerFactory.getLogger(JedisRedisController.class);
+    private final Logger logger = LoggerFactory.getLogger(RedisController.class);
 
     @Autowired
-    JedisRedisService jedisRedisService;
+    RedisService redisService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/jedis")
     public String get(@RequestParam(required = false, defaultValue = "owner") String key)
     {
-        return jedisRedisService.get(key);
+        return redisService.get(key);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/jedis")
@@ -30,20 +30,20 @@ public class JedisRedisController
     {
         try
         {
-            jedisRedisService.set(key, StringTools.jsonToObject(body, Class.forName(clzName)));
+            redisService.set(key, StringTools.jsonToObject(body, Class.forName(clzName)));
             return "";
         }
         catch (Exception e)
         {
-            logger.error("JedisRedisController.set() has error.", e);
+            logger.error("RedisController.set() has error.", e);
             return "FAIL";
         }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/jedis")
-    public void delete(@RequestParam(required = true) String key)
+    public void delete(@RequestParam String key)
     {
-        jedisRedisService.del(key);
+        redisService.del(key);
     }
 
 }
