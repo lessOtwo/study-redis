@@ -1,53 +1,66 @@
 package cn.wensheng.studyredis.service;
 
-import cn.wensheng.studyredis.bean.UserInfo;
-import cn.wensheng.studyredis.utils.StringTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.Instant;
 
 @Service
 public class RedisService
 {
-    private final Logger logger = LoggerFactory.getLogger(RedisService.class);
-
     @Autowired
     RedisTemplate<String, Object> jsonRedisTemplate;
 
-    public String get(String key)
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedisTemplate protobufRedisTemplate;
+
+    public Object getObject(String key)
+        throws Exception
     {
-        try
-        {
-            return StringTools.objToJson(jsonRedisTemplate.opsForValue().get(key));
-        }
-        catch (Exception e)
-        {
-            logger.error("RedisService.get({}) has error.", key, e);
-            return "FAIL";
-        }
+        return jsonRedisTemplate.opsForValue().get(key);
     }
 
-    public void set(String key, Object object)
+    public String getString(String key)
+        throws Exception
     {
-        if (logger.isDebugEnabled())
-        {
-            logger.debug("enter RedisService.set(), key=[{}], value=[{}]", key, object);
-        }
+        return stringRedisTemplate.opsForValue().get(key);
+    }
 
+    public void setObject(String key, Object object)
+        throws Exception
+    {
         jsonRedisTemplate.opsForValue().set(key, object);
     }
 
-    public void del(String key)
+    public void setObjectWithInvalidTime(String key, Object object, long seconds)
     {
-        try
-        {
-            jsonRedisTemplate.delete(key);
-        }
-        catch (Exception e)
-        {
-            logger.error("RedisService.delete({}) has error.", key, e);
-        }
+        Instant now = Instant.now();
+        Instant expires = now.plusSeconds(seconds);
+        jsonRedisTemplate.opsForValue().set(key, object, Duration.between(now, expires));
+    }
+
+    public void setString(String key, String value)
+        throws Exception
+    {
+        stringRedisTemplate.opsForValue().set(key, value);
+    }
+
+    public void setStringWithInvalidTime(String key, String value, long seconds)
+    {
+        Instant now = Instant.now();
+        Instant expires = now.plusSeconds(seconds);
+        stringRedisTemplate.opsForValue().set(key, value, Duration.between(now, expires));
+    }
+
+    public void del(String key)
+        throws Exception
+    {
+        jsonRedisTemplate.delete(key);
     }
 }

@@ -24,4 +24,13 @@ public class MyRedisAutoConfig
         return template;
     }
 
+    @Bean
+    public RedisTemplate protobufRedisTemplate(LettuceConnectionFactory redisConnectionFactory)
+    {
+        RedisTemplate template = new RedisTemplate();
+        template.setEnableDefaultSerializer(false);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setConnectionFactory(redisConnectionFactory);
+        return template;
+    }
 }

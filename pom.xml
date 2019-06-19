@@ -15,6 +15,10 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <commons-pool2.version>2.6.2</commons-pool2.version>
+        <protobuf-java.version>3.6.1</protobuf-java.version>
+        <protostuff-core.version>1.6.0</protostuff-core.version>
+        <protostuff-runtime.version>1.6.0</protostuff-runtime.version>
     </properties>
 
     <dependencies>
@@ -54,6 +58,29 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf-java.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>${protostuff-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff-runtime.version}</version>
         </dependency>
 
     </dependencies>

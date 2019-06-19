@@ -15,7 +15,5 @@ public class Test
 
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(userInfo));
-
-
     }
 }

@@ -11,18 +11,17 @@
     </Properties>
 
     <Appenders>
-        <!--<Console name="console" target="SYSTEM_OUT" follow="true">
+        <Console name="console" target="SYSTEM_OUT" follow="true">
             <PatternLayout>
                 <pattern>${loglayout}</pattern>
             </PatternLayout>
-        </Console>-->
+        </Console>
         <RollingFile name="error-log" fileName="${logpath}/error.log" filePattern="${logpath}/error-${filesuffix}.log">
             <PatternLayout>
                 <pattern>${loglayout}</pattern>
             </PatternLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="1 GB"/>
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingFile>
 
@@ -32,7 +31,6 @@
             </PatternLayout>
             <Policies>
                 <SizeBasedTriggeringPolicy size="1 GB"/>
-                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
         </RollingFile>
 
@@ -42,7 +40,7 @@
         <Logger name="cn.wensheng.studyredis" level="${loglevel}" />
         <Logger name="org.springframework" level="INFO" />
         <Root level="${loglevel}">
-            <!--<appender-ref ref="console"/>-->
+            <appender-ref ref="console"/>
             <appender-ref ref="error-log" level="error"/>
             <appender-ref ref="app-log"/>
         </Root>
