@@ -25,9 +25,9 @@ public class MyRedisAutoConfig
     }
 
     @Bean
-    public RedisTemplate protobufRedisTemplate(LettuceConnectionFactory redisConnectionFactory)
+    public RedisTemplate<String, byte[]> bytesRedisTemplate(LettuceConnectionFactory redisConnectionFactory)
     {
-        RedisTemplate template = new RedisTemplate();
+        RedisTemplate<String, byte[]> template = new RedisTemplate<>();
         template.setEnableDefaultSerializer(false);
         template.setKeySerializer(new StringRedisSerializer());
         template.setConnectionFactory(redisConnectionFactory);

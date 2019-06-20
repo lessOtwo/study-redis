@@ -31,7 +31,7 @@ public class RedisController
         {
             if (serialize)
             {
-                return objectMapper.writeValueAsString(redisService.getObject(key));
+                return objectMapper.writeValueAsString(redisService.getJsonObject(key));
             }
             else
             {
@@ -51,6 +51,7 @@ public class RedisController
     {
         try
         {
+            Class clazz = Class.forName(clzName);
             if (StringUtil.isNullOrEmpty(seconds))
             {
                 if (StringUtil.isNullOrEmpty(clzName))
@@ -59,7 +60,7 @@ public class RedisController
                 }
                 else
                 {
-                    redisService.setObject(key, objectMapper.readValue(body, Class.forName(clzName)));
+                    redisService.setJsonObject(key, objectMapper.readValue(body, clazz));
                 }
             }
             else
@@ -71,9 +72,7 @@ public class RedisController
                 }
                 else
                 {
-                    redisService.setObjectWithInvalidTime(key,
-                        objectMapper.readValue(body, Class.forName(clzName)),
-                        invalidTime);
+                    redisService.setJsonObjectWithInvalidTime(key, objectMapper.readValue(body, clazz), invalidTime);
                 }
             }
 
@@ -97,6 +96,48 @@ public class RedisController
         catch (Exception e)
         {
             logger.error("RedisController.delete({}) has error.", key, e);
+            return FAILED;
+        }
+    }
+
+    @PostMapping(value = "/setObjectByBytes")
+    public String setObjectByBytes(@RequestParam String key, @RequestParam String clzName, @RequestBody String body,
+        @RequestParam(required = false) String seconds)
+    {
+        try
+        {
+            Class clazz = Class.forName(clzName);
+
+            if (StringUtil.isNullOrEmpty(seconds))
+            {
+                redisService.setBytes(key, objectMapper.readValue(body, clazz), clazz);
+            }
+            else
+            {
+                long invalidTime = NumTools.toLong(seconds, 60);
+                redisService.setBytesWithInvalidTime(key, objectMapper.readValue(body, clazz), clazz, invalidTime);
+            }
+
+            return SUCCESS;
+        }
+        catch (Exception e)
+        {
+            logger.error("RedisController.setObjectByBytes({}) has error.", key, e);
+            return FAILED;
+        }
+    }
+
+    @GetMapping(value = "getObjectByBytes")
+    public String getObjectByBytes(@RequestParam String key, @RequestParam String clzName)
+    {
+        try
+        {
+            Object obj = redisService.getBytes(key, Class.forName(clzName));
+            return objectMapper.writeValueAsString(obj);
+        }
+        catch (Exception e)
+        {
+            logger.error("RedisController.getObjectByBytes({}) has error.", key, e);
             return FAILED;
         }
     }
