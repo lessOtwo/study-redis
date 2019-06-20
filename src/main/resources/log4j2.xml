@@ -39,10 +39,13 @@
     <Loggers>
         <Logger name="cn.wensheng.studyredis" level="${loglevel}" />
         <Logger name="org.springframework" level="INFO" />
+        <Logger name="io.lettuce" level="INFO" />
+        <Logger name="io.netty" level="INFO" />
+
         <Root level="${loglevel}">
-            <appender-ref ref="console"/>
             <appender-ref ref="error-log" level="error"/>
             <appender-ref ref="app-log"/>
+            <appender-ref ref="console"/>
         </Root>
     </Loggers>
 </configuration>

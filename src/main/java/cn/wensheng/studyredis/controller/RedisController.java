@@ -51,7 +51,7 @@ public class RedisController
     {
         try
         {
-            Class clazz = Class.forName(clzName);
+
             if (StringUtil.isNullOrEmpty(seconds))
             {
                 if (StringUtil.isNullOrEmpty(clzName))
@@ -60,6 +60,7 @@ public class RedisController
                 }
                 else
                 {
+                    Class clazz = Class.forName(clzName);
                     redisService.setJsonObject(key, objectMapper.readValue(body, clazz));
                 }
             }
@@ -72,6 +73,7 @@ public class RedisController
                 }
                 else
                 {
+                    Class clazz = Class.forName(clzName);
                     redisService.setJsonObjectWithInvalidTime(key, objectMapper.readValue(body, clazz), invalidTime);
                 }
             }

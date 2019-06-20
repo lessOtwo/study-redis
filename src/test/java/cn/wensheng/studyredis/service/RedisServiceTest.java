@@ -2,7 +2,6 @@ package cn.wensheng.studyredis.service;
 
 import cn.wensheng.studyredis.proto.UserInfoOuterClass.*;
 import cn.wensheng.studyredis.utils.ProtobufUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,11 @@ public class RedisServiceTest
         redisService.setBytes(THIS_KEY, userInfo.build().toByteArray());
         byte[] bytes = redisService.getBytes(THIS_KEY);
         UserInfo getFromRedis = UserInfo.parseFrom(bytes);
-        Assert.assertNotNull(getFromRedis);
-        Assert.assertEquals(getFromRedis.getAccountName(), "李四");
-        Assert.assertEquals(getFromRedis.getMobile(), "+8617605884944");
-        Assert.assertEquals(getFromRedis.getAge(), 30);
+
+        assertNotNull(getFromRedis);
+        assertEquals(getFromRedis.getAccountName(), "李四");
+        assertEquals(getFromRedis.getMobile(), "+8617605884944");
+        assertEquals(getFromRedis.getAge(), 30);
 
         System.out.println(ProtobufUtils.printToString(getFromRedis));
     }
