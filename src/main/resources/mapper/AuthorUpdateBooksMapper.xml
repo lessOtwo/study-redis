@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper">
+
+    <resultMap id="updateBooks" type="UpdateBook">
+
+        <result property="bookId" column="BOOKID"/>
+        <result property="bookName" column="BOOKNAME"/>
+        <result property="chapterId" column="CHAPTERID"/>
+        <result property="chapterName" column="CHAPTERNAME"/>
+        <result property="lastSerialTime" column="LASTSERIALTIME"/>
+
+    </resultMap>
+
+    <select id="getAuthorUpdateBooks" resultMap="updateBooks" parameterType="UpdateBook">
+        SELECT b.BOOKID AS BOOKID, b.NAME AS BOOKNAME, c.CHAPTERID, c.CHAPTERNAME, b.LASTSERIALTIME AS LASTSERIALTIME
+        FROM CON_T_BOOK_AUTHOR a
+        INNER JOIN CON_T_BASEBOOK b ON a.BOOKID = b.BOOKID
+        INNER JOIN CON_T_BASECHAPTER c ON b.BOOKID = c.BOOKID
+        WHERE ( b.ISFINISH = '0' OR b.ISFINISH IS NULL ) AND b.STATUS = '13'
+        AND b.LASTSERIALTIME >= STR_TO_DATE( #{fromDate}, '%Y-%m-%d %T' )
+        AND a.AUTHORID = #{authorId}
+        ORDER BY b.LASTSERIALTIME DESC
+    </select>
+
+</mapper>

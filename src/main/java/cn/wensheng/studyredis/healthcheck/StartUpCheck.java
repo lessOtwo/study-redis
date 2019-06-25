@@ -29,7 +29,7 @@ public class StartUpCheck implements ApplicationListener<ContextRefreshedEvent>
         }
         catch (Exception e)
         {
-            logger.error("startup check health error.", e);
+            System.out.println("=========>>>connect to redis-cluster failed!<<<=========");
         }
     }
 }
