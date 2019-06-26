@@ -1,4 +1,4 @@
-package cn.wensheng.studyredis.service;
+package cn.wensheng.studyredis.cache;
 
 import cn.wensheng.studyredis.utils.ProtobufUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Service
-public class RedisService
+public class RedisCache
 {
     @Autowired
     RedisTemplate<String, Object> jsonRedisTemplate;

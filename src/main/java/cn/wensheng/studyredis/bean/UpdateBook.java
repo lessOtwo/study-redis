@@ -2,14 +2,17 @@ package cn.wensheng.studyredis.bean;
 
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 符合条件的更新的图书
  */
 @Alias("UpdateBook")
-public class UpdateBook
+public class UpdateBook implements Serializable
 {
+    private static final long serialVersionUID = -421982551984028506L;
+
     private String bookId;
 
     private String bookName;
@@ -23,9 +26,9 @@ public class UpdateBook
     // 更新时间
     private Date lastSerialTime;
 
-    private String authorId;
+    private transient String authorId;
 
-    private String fromDate;
+    private transient String fromDate;
 
     public String getBookId()
     {

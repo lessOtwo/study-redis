@@ -1,9 +1,12 @@
-package cn.wensheng.studyredis.service;
+package cn.wensheng.studyredis;
 
 import cn.wensheng.studyredis.bean.UpdateBook;
+import cn.wensheng.studyredis.cache.RedisCache;
+import cn.wensheng.studyredis.cache.service.AuthorUpdateBooksService;
 import cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper;
 import cn.wensheng.studyredis.proto.UserInfoOuterClass.*;
 import cn.wensheng.studyredis.utils.ProtobufUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,20 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RedisServiceTest
+public class StudyRedisTest
 {
 
     @Autowired
-    RedisService redisService;
+    RedisCache redisCache;
 
     @Autowired
     AuthorUpdateBooksMapper authorUpdateBooksMapper;
+
+    @BeforeClass
+    public static void init()
+    {
+        org.apache.catalina.webresources.TomcatURLStreamHandlerFactory.getInstance();
+    }
 
     @Test
     public void setAndGetBytes()
@@ -38,8 +47,8 @@ public class RedisServiceTest
         userInfo.setMobile("+8617605884944");
         userInfo.setAge(30);
 
-        redisService.setBytes(THIS_KEY, userInfo.build().toByteArray());
-        byte[] bytes = redisService.getBytes(THIS_KEY);
+        redisCache.setBytesWithInvalidTime(THIS_KEY, userInfo.build().toByteArray(), 60);
+        byte[] bytes = redisCache.getBytes(THIS_KEY);
         UserInfo getFromRedis = UserInfo.parseFrom(bytes);
 
         assertNotNull(getFromRedis);
@@ -61,5 +70,22 @@ public class RedisServiceTest
 
         List<UpdateBook> updateBookList = authorUpdateBooksMapper.getAuthorUpdateBooks(param);
         assertNotNull(updateBookList);
+    }
+
+    @Test
+    public void testAuthorUpdateBooksService()
+        throws Exception
+    {
+        String authorId = "1003755015";
+        int timeLimit = 168;
+        String key = AuthorUpdateBooksService.getInstance().getKey(authorId, timeLimit);
+        System.out.println(key);
+
+        List<UpdateBook> updateBookList =
+            AuthorUpdateBooksService.getInstance().getAuthorUpdateBooks(authorId, timeLimit);
+        assertNotNull(updateBookList);
+        System.out.println(updateBookList);
+
+        assertNotNull(redisCache.getJsonObject(key));
     }
 }

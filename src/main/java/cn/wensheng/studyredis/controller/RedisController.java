@@ -1,6 +1,6 @@
 package cn.wensheng.studyredis.controller;
 
-import cn.wensheng.studyredis.service.RedisService;
+import cn.wensheng.studyredis.cache.RedisCache;
 import cn.wensheng.studyredis.utils.NumTools;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.util.internal.StringUtil;
@@ -21,7 +21,7 @@ public class RedisController
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    RedisService redisService;
+    RedisCache redisService;
 
     @GetMapping(value = "/redis")
     public String get(@RequestParam boolean serialize,
