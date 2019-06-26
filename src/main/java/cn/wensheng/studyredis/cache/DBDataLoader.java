@@ -8,5 +8,5 @@ public interface DBDataLoader
     /**
      * 数据库查询数据放入缓存
      */
-    DataLoadResult load(Object[] loadParams) throws Exception;
+    DataLoadResult load(Object[] loadParams);
 }

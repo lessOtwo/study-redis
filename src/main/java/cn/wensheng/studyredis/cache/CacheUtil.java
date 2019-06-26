@@ -7,6 +7,10 @@ public class CacheUtil
 {
     private static final Logger logger = LoggerFactory.getLogger(CacheUtil.class);
 
+    private CacheUtil()
+    {
+    }
+
     public static Object getCachedData(String cacheName, String key, Object[] loadParams)
     {
         CacheDao dao = CacheDaoFactory.getCacheDao(cacheName);

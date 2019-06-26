@@ -2,7 +2,7 @@ package cn.wensheng.studyredis;
 
 import cn.wensheng.studyredis.bean.UpdateBook;
 import cn.wensheng.studyredis.cache.RedisCache;
-import cn.wensheng.studyredis.cache.service.AuthorUpdateBooksService;
+import cn.wensheng.studyredis.cache.service.AuthorUpdateBooksCacheService;
 import cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper;
 import cn.wensheng.studyredis.proto.UserInfoOuterClass.*;
 import cn.wensheng.studyredis.utils.ProtobufUtils;
@@ -52,11 +52,9 @@ public class StudyRedisTest
         UserInfo getFromRedis = UserInfo.parseFrom(bytes);
 
         assertNotNull(getFromRedis);
-        assertEquals(getFromRedis.getAccountName(), "李四");
-        assertEquals(getFromRedis.getMobile(), "+8617605884944");
-        assertEquals(getFromRedis.getAge(), 30);
-
-        System.out.println(ProtobufUtils.printToString(getFromRedis));
+        assertEquals("李四", getFromRedis.getAccountName());
+        assertEquals("+8617605884944", getFromRedis.getMobile());
+        assertEquals(30, getFromRedis.getAge());
     }
 
     @Test
@@ -78,13 +76,12 @@ public class StudyRedisTest
     {
         String authorId = "1003755015";
         int timeLimit = 168;
-        String key = AuthorUpdateBooksService.getInstance().getKey(authorId, timeLimit);
+        String key = AuthorUpdateBooksCacheService.getInstance().getKey(authorId, timeLimit);
         System.out.println(key);
 
         List<UpdateBook> updateBookList =
-            AuthorUpdateBooksService.getInstance().getAuthorUpdateBooks(authorId, timeLimit);
+            AuthorUpdateBooksCacheService.getInstance().getAuthorUpdateBooks(authorId, timeLimit);
         assertNotNull(updateBookList);
-        System.out.println(updateBookList);
 
         assertNotNull(redisCache.getJsonObject(key));
     }
