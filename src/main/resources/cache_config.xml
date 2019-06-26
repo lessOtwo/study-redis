@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Items>
+    <Item daoClass="cn.wensheng.studyredis.cache.CacheDao">
+        <CacheName>AUTHOR_UPDATEBOOKS_CACHE</CacheName>
+        <KeyPrefix>AUTHOR_UPDATEBOOKS:</KeyPrefix>
+        <SerializeType>JSON</SerializeType>
+        <TimeExpire>120</TimeExpire>
+        <DBDtaLoader>
+            cn.wensheng.studyredis.cache.dataloader.AuthorUpdateBooksDataloader
+        </DBDtaLoader>
+    </Item>
+</Items>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="INFO">
+
+    <Properties>
+        <Property name="appname">study-redis</Property>
+        <Property name="apphome">.</Property>
+        <Property name="logpath">${apphome}/logs</Property>
+        <Property name="loglevel">debug</Property>
+        <Property name="loglayout">%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] [%t] %c{1} - %msg%n</Property>
+        <Property name="filesuffix">%d{yyyy-MM-dd}-%i</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <pattern>${loglayout}</pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="error-log" fileName="${logpath}/error.log" filePattern="${logpath}/error-${filesuffix}.log">
+            <PatternLayout>
+                <pattern>${loglayout}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="app-log" fileName="${logpath}/${appname}.log" filePattern="${logpath}/${appname}-${filesuffix}.log">
+            <PatternLayout>
+                <pattern>${loglayout}</pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="cn.wensheng.studyredis" level="${loglevel}" />
+        <Logger name="org.springframework" level="INFO" />
+        <Logger name="io.lettuce" level="INFO" />
+        <Logger name="io.netty" level="INFO" />
+
+        <Root level="${loglevel}">
+            <appender-ref ref="error-log" level="error"/>
+            <appender-ref ref="app-log"/>
+            <appender-ref ref="console"/>
+        </Root>
+    </Loggers>
+</configuration>
+

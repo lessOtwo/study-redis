@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "cn.wensheng.studyredis.proto";
+
+message UserInfo {
+    string accountName = 1;
+
+    string mobile = 2;
+
+    int32 age = 3;
+}
