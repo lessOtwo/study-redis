@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -21,6 +23,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class StudyRedisTest
 {
+    private static final int days = (int)ChronoUnit.DAYS.between(LocalDate.of(2019, 6, 19),
+        LocalDate.now());
 
     @Autowired
     RedisCache redisCache;
@@ -59,9 +63,10 @@ public class StudyRedisTest
     public void testGetAuthorUpdateBooks()
         throws SQLException
     {
+
         UpdateBook param = new UpdateBook();
         param.setAuthorId("1003755015");
-        param.setTimeLimit(30);
+        param.setTimeLimit(days);
 
         List<UpdateBook> updateBookList = authorUpdateBooksDao.getAuthorUpdateBooks(param);
         assertNotNull(updateBookList);
@@ -72,12 +77,11 @@ public class StudyRedisTest
         throws Exception
     {
         String authorId = "1003755015";
-        int timeLimit = 30;
-        String key = AuthorUpdateBooksCacheService.getInstance().getKey(authorId, timeLimit);
+        String key = AuthorUpdateBooksCacheService.getInstance().getKey(authorId, days);
         System.out.println(key);
 
         List<UpdateBook> updateBookList =
-            AuthorUpdateBooksCacheService.getInstance().getAuthorUpdateBooks(authorId, timeLimit);
+            AuthorUpdateBooksCacheService.getInstance().getAuthorUpdateBooks(authorId, days);
         assertNotNull(updateBookList);
 
         assertNotNull(redisCache.getJsonObject(key));
