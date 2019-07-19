@@ -5,19 +5,18 @@ import cn.wensheng.studyredis.cache.DBDataLoader;
 import cn.wensheng.studyredis.cache.DataLoadResult;
 import cn.wensheng.studyredis.exception.Code;
 import cn.wensheng.studyredis.exception.WithCodeException;
-import cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper;
+import cn.wensheng.studyredis.dao.AuthorUpdateBooksDao;
 import cn.wensheng.studyredis.utils.SpringUtils;
 import io.netty.util.internal.StringUtil;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AuthorUpdateBooksDataloader implements DBDataLoader
 {
     @Override
     public DataLoadResult load(Object[] loadParams)
-        throws Exception
+        throws SQLException, WithCodeException
     {
         DataLoadResult result = new DataLoadResult();
 
@@ -37,12 +36,10 @@ public class AuthorUpdateBooksDataloader implements DBDataLoader
 
         UpdateBook param = new UpdateBook();
         param.setAuthorId(authorId);
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        param.setFromDate(formatter.format(now.minusHours(timeLimit)));
+        param.setTimeLimit(timeLimit);
 
-        AuthorUpdateBooksMapper authorUpdateBooksMapper = SpringUtils.getBean(AuthorUpdateBooksMapper.class);
-        List<UpdateBook> updateBookList = authorUpdateBooksMapper.getAuthorUpdateBooks(param);
+        AuthorUpdateBooksDao authorUpdateBooksDao = SpringUtils.getBean(AuthorUpdateBooksDao.class);
+        List<UpdateBook> updateBookList = authorUpdateBooksDao.getAuthorUpdateBooks(param);
 
         result.setSuccess(null != updateBookList);
         result.setData(updateBookList);

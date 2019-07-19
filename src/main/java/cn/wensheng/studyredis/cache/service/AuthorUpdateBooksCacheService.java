@@ -29,11 +29,7 @@ public class AuthorUpdateBooksCacheService
 
     public String getKey(String authorId, int timeLimit)
     {
-        StringBuilder sb = new StringBuilder(CacheUtil.getKeyPrefix(CACHENAME));
-        sb.append(authorId);
-        sb.append(":");
-        sb.append(timeLimit);
-        return sb.toString();
+        return CacheUtil.getKeyPrefix(CACHENAME) + authorId + ":" + timeLimit;
     }
 }
 

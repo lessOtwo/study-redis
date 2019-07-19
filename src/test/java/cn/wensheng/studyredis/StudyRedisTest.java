@@ -3,9 +3,8 @@ package cn.wensheng.studyredis;
 import cn.wensheng.studyredis.bean.UpdateBook;
 import cn.wensheng.studyredis.cache.RedisCache;
 import cn.wensheng.studyredis.cache.service.AuthorUpdateBooksCacheService;
-import cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper;
+import cn.wensheng.studyredis.dao.AuthorUpdateBooksDao;
 import cn.wensheng.studyredis.proto.UserInfoOuterClass.*;
-import cn.wensheng.studyredis.utils.ProtobufUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -28,7 +26,7 @@ public class StudyRedisTest
     RedisCache redisCache;
 
     @Autowired
-    AuthorUpdateBooksMapper authorUpdateBooksMapper;
+    AuthorUpdateBooksDao authorUpdateBooksDao;
 
     @BeforeClass
     public static void init()
@@ -59,14 +57,13 @@ public class StudyRedisTest
 
     @Test
     public void testGetAuthorUpdateBooks()
+        throws SQLException
     {
         UpdateBook param = new UpdateBook();
         param.setAuthorId("1003755015");
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        param.setFromDate(formatter.format(now.minusHours(168)));
+        param.setTimeLimit(30);
 
-        List<UpdateBook> updateBookList = authorUpdateBooksMapper.getAuthorUpdateBooks(param);
+        List<UpdateBook> updateBookList = authorUpdateBooksDao.getAuthorUpdateBooks(param);
         assertNotNull(updateBookList);
     }
 
@@ -75,7 +72,7 @@ public class StudyRedisTest
         throws Exception
     {
         String authorId = "1003755015";
-        int timeLimit = 168;
+        int timeLimit = 30;
         String key = AuthorUpdateBooksCacheService.getInstance().getKey(authorId, timeLimit);
         System.out.println(key);
 

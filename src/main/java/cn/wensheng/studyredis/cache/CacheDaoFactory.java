@@ -68,7 +68,7 @@ public class CacheDaoFactory
                         }
                         else if ("SerializeType".equals(tagName))
                         {
-                            daoInstance.setSerializeType(SerializeTypeEnum.valueOf(textContent));
+                            daoInstance.setSerializeType(SerializeTypeEnum.valueOf(textContent.toUpperCase()));
                         }
                         // 缓存失效时间，单位：秒
                         else if ("TimeExpire".equals(tagName))

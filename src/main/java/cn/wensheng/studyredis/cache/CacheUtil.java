@@ -31,7 +31,7 @@ public class CacheUtil
         if (null == dao)
         {
             logger.error("缓存:{}获取CacheDao失败.", cacheName);
-            return null;
+            return "";
         }
         else
         {

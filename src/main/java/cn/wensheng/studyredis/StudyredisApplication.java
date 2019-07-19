@@ -47,11 +47,11 @@ public class StudyredisApplication extends SpringBootServletInitializer
         try
         {
             redisCache.getString("owner");
-            log.error("=========>>>connect to redis-cluster success!<<<=========");
+            log.info("=========>>>connect to redis-cluster success!<<<=========");
         }
         catch (Exception e)
         {
-            log.error("=========>>>connect to redis-cluster failed!<<<=========", e);
+            log.info("=========>>>connect to redis-cluster failed!<<<=========", e);
         }
     }
 }
