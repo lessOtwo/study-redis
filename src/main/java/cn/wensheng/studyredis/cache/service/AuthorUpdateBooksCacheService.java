@@ -1,23 +1,21 @@
 package cn.wensheng.studyredis.cache.service;
 
 import cn.wensheng.studyredis.bean.UpdateBook;
-import cn.wensheng.studyredis.cache.CacheDao;
-import cn.wensheng.studyredis.cache.CacheDaoFactory;
 import cn.wensheng.studyredis.cache.CacheUtil;
 
 import java.util.List;
 
-public class AuthorUpdateBooksService
+public class AuthorUpdateBooksCacheService
 {
     private static final String CACHENAME = "AUTHOR_UPDATEBOOKS_CACHE";
 
-    private static final AuthorUpdateBooksService instance = new AuthorUpdateBooksService();
+    private static final AuthorUpdateBooksCacheService instance = new AuthorUpdateBooksCacheService();
 
-    private AuthorUpdateBooksService()
+    private AuthorUpdateBooksCacheService()
     {
     }
 
-    public static AuthorUpdateBooksService getInstance()
+    public static AuthorUpdateBooksCacheService getInstance()
     {
         return instance;
     }
@@ -31,11 +29,7 @@ public class AuthorUpdateBooksService
 
     public String getKey(String authorId, int timeLimit)
     {
-        StringBuilder sb = new StringBuilder(CacheUtil.getKeyPrefix(CACHENAME));
-        sb.append(authorId);
-        sb.append(":");
-        sb.append(timeLimit);
-        return sb.toString();
+        return CacheUtil.getKeyPrefix(CACHENAME) + authorId + ":" + timeLimit;
     }
 }
 

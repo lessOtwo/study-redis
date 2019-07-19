@@ -28,7 +28,7 @@ public class UpdateBook implements Serializable
 
     private transient String authorId;
 
-    private transient String fromDate;
+    private transient int timeLimit;
 
     public String getBookId()
     {
@@ -90,14 +90,14 @@ public class UpdateBook implements Serializable
         this.authorId = authorId;
     }
 
-    public String getFromDate()
+    public int getTimeLimit()
     {
-        return fromDate;
+        return timeLimit;
     }
 
-    public void setFromDate(String fromDate)
+    public void setTimeLimit(int timeLimit)
     {
-        this.fromDate = fromDate;
+        this.timeLimit = timeLimit;
     }
 
     @Override
@@ -109,6 +109,8 @@ public class UpdateBook implements Serializable
         sb.append(", chapterId='").append(chapterId).append('\'');
         sb.append(", chapterName='").append(chapterName).append('\'');
         sb.append(", lastSerialTime=").append(lastSerialTime);
+        sb.append(", authorId='").append(authorId).append('\'');
+        sb.append(", timeLimit=").append(timeLimit);
         sb.append('}');
         return sb.toString();
     }

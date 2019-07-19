@@ -7,6 +7,10 @@ public class CacheUtil
 {
     private static final Logger logger = LoggerFactory.getLogger(CacheUtil.class);
 
+    private CacheUtil()
+    {
+    }
+
     public static Object getCachedData(String cacheName, String key, Object[] loadParams)
     {
         CacheDao dao = CacheDaoFactory.getCacheDao(cacheName);
@@ -27,7 +31,7 @@ public class CacheUtil
         if (null == dao)
         {
             logger.error("缓存:{}获取CacheDao失败.", cacheName);
-            return null;
+            return "";
         }
         else
         {

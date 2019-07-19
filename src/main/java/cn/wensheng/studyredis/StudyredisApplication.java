@@ -16,7 +16,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class StudyredisApplication extends SpringBootServletInitializer
     implements ApplicationListener<ContextRefreshedEvent>
 {
-    private static final Logger logger = LoggerFactory.getLogger(StudyredisApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(StudyredisApplication.class);
 
     @Autowired
     RedisCache redisCache;
@@ -47,11 +47,11 @@ public class StudyredisApplication extends SpringBootServletInitializer
         try
         {
             redisCache.getString("owner");
-            logger.error("=========>>>connect to redis-cluster success!<<<=========");
+            log.info("=========>>>connect to redis-cluster success!<<<=========");
         }
         catch (Exception e)
         {
-            logger.error("=========>>>connect to redis-cluster failed!<<<=========", e);
+            log.info("=========>>>connect to redis-cluster failed!<<<=========", e);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.wensheng.studyredis.mapper.AuthorUpdateBooksMapper">
+<mapper namespace="cn.wensheng.studyredis.dao.AuthorUpdateBooksDao">
 
     <resultMap id="updateBooks" type="UpdateBook">
 
@@ -17,8 +17,10 @@
         FROM CON_T_BOOK_AUTHOR a
         INNER JOIN CON_T_BASEBOOK b ON a.BOOKID = b.BOOKID
         INNER JOIN CON_T_BASECHAPTER c ON b.BOOKID = c.BOOKID
-        WHERE ( b.ISFINISH = '0' OR b.ISFINISH IS NULL ) AND b.STATUS = '13'
-        AND b.LASTSERIALTIME >= STR_TO_DATE( #{fromDate}, '%Y-%m-%d %T' )
+        WHERE ( b.ISFINISH = '0' OR b.ISFINISH IS NULL )
+        AND b.STATUS != '16'
+        AND b.STATUS != '14'
+        AND b.LASTSERIALTIME >= date_sub(NOW(), interval ${timeLimit} DAY)
         AND a.AUTHORID = #{authorId}
         ORDER BY b.LASTSERIALTIME DESC
     </select>
